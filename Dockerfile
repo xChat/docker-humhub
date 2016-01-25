@@ -41,6 +41,7 @@ CMD ["supervisord", "-n"]
 
 # pure-ftpd
 # properly setup debian sources
+
 RUN echo "deb http://http.debian.net/debian jessie main\n\
 deb-src http://http.debian.net/debian jessie main\n\
 deb http://http.debian.net/debian jessie-updates main\n\
@@ -51,12 +52,15 @@ deb-src http://security.debian.org jessie/updates main\n\
 RUN apt-get -y update
 
 # install package building helpers
+
 RUN apt-get -y --force-yes install dpkg-dev debhelper
 
 # install dependancies
+
 RUN apt-get -y build-dep pure-ftpd
 
 # build from source
+
 RUN mkdir /tmp/pure-ftpd/ && \
 	cd /tmp/pure-ftpd/ && \
 	apt-get source pure-ftpd && \
@@ -65,14 +69,17 @@ RUN mkdir /tmp/pure-ftpd/ && \
 	dpkg-buildpackage -b -uc
 
 # install the new deb files
+
 RUN dpkg -i /tmp/pure-ftpd/pure-ftpd-common*.deb
 RUN apt-get -y install openbsd-inetd
 RUN dpkg -i /tmp/pure-ftpd/pure-ftpd_*.deb
 
 # prevent pure-ftpd upgrading
+
 RUN apt-mark hold pure-ftpd pure-ftpd-common
 
 # setup ftpgroup and ftpuser
+
 RUN groupadd ftpgroup
 RUN useradd -g ftpgroup -d /home/ftpusers -s /dev/null ftpuser
 
@@ -81,10 +88,12 @@ ENV PUBLICHOST ftp.foo.com
 VOLUME /home/ftpusers
 
 # add ftp user
+
 RUN pure-pw useradd bob -u ftpuser -d /var/www/humhub
 RUN pure-pw mkdb
 
 # startup
+
 CMD /usr/sbin/pure-ftpd -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30009
 
 EXPOSE 80 443 21 30000-30009
