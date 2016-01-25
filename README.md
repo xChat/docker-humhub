@@ -1,8 +1,6 @@
 # docker-humhub
 
-Base on `adminrezo/docker-humhub` docker image
-Base on `stilliard/pure-ftpd:hardened` docker image
-
+Based on `adminrezo/docker-humhub` docker image
 
 Humhub
 A social network without Big Brother
