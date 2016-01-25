@@ -3,6 +3,7 @@
 Base on `adminrezo/docker-humhub` docker image
 Base on `stilliard/pure-ftpd:hardened` docker image
 
+
 Humhub
 A social network without Big Brother
 
@@ -29,10 +30,6 @@ DB_PASSWORD HuMhUb
 ```
 
 Based on:
-adminrezo/docker-humhub
-https://hub.docker.com/r/adminrezo/docker-humhub/
-
-And
-
+adminrezo/docker-humhub - https://hub.docker.com/r/adminrezo/docker-humhub/
 https://github.com/13Genius/docker-humhub
-
+https://github.com/RobLoach/Dockie
