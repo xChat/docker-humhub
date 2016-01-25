@@ -18,7 +18,7 @@ ENV DB_PASSWORD HuMhUb
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
 RUN mysqld_safe start
 RUN apt-get install -y -q php5-gd php5-curl php5-sqlite php5-ldap php-apc wget unzip cron
-RUN wget https://github.com/humhub/humhub/archive/master.zip
+RUN wget $GIT_MASTER_URL
 RUN unzip master.zip
 RUN mv humhub-master /var/www/humhub
 RUN chown www-data:www-data -R /var/www/
