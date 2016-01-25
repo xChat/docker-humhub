@@ -7,7 +7,7 @@ A social network without Big Brother
 
 MariaDB is configured with a humhub database with a humhub user with a HuMhUb password
 
-## Howto
+## How to
 
 Just build it ...
 
