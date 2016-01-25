@@ -1,5 +1,8 @@
 # docker-humhub
 
+Base on `adminrezo/docker-humhub` docker image
+Base on `stilliard/pure-ftpd:hardened` docker image
+
 Humhub
 A social network without Big Brother
 
@@ -9,15 +12,13 @@ MariaDB is configured with a humhub database with a humhub user with a HuMhUb pa
 
 Just build it ...
 
-```docker build -t adminrezo/humhub .
+```docker build -t adminrezo/humhub .```
 
 ... run it ...
 
-```docker run --name humhub -d adminrezo/humhub && docker inspect humhub |grep IPAddress
+```docker run --name humhub -d adminrezo/humhub && docker inspect humhub |grep IPAddress```
 
-... enjoy it !
-
-https://your-container-ip/
+enjoy it ! `https://your-container-ip/`
 
 ## Variables, and default values
 ```shell
