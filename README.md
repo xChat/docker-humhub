@@ -30,7 +30,8 @@ DB_PASSWORD HuMhUb
 ```
 
 Based on:
-https://hub.docker.com/r/adminrezo/docker-humhub/ (adminrezo/docker-humhub)
+
+https://hub.docker.com/r/adminrezo/docker-humhub (adminrezo/docker-humhub)
 
 https://github.com/13Genius/docker-humhub
 
