@@ -4,7 +4,7 @@
 #
 
 
-FROM     xChat/docker-humhub
+FROM     adminrezo/docker-lamp
 MAINTAINER Jerry Li
 
 ENV DEBIAN_FRONTEND noninteractive
