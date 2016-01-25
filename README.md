@@ -17,3 +17,7 @@ docker run --name humhub -d adminrezo/humhub && docker inspect humhub |grep IPAd
 ... enjoy it !
 
 https://your-container-ip/
+
+Based on:
+adminrezo/docker-humhub
+https://hub.docker.com/r/adminrezo/docker-humhub/
