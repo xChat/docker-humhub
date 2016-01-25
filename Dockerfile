@@ -92,6 +92,21 @@ VOLUME /home/ftpusers
 RUN pure-pw useradd bob -u ftpuser -d /var/www/humhub
 RUN pure-pw mkdb
 
+# phpmyadmin
+
+RUN (echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password password root' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password root' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password root' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password root' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections)
+RUN apt-get install phpmyadmin -y
+ADD configs/phpmyadmin/config.inc.php /etc/phpmyadmin/conf.d/config.inc.php
+RUN chmod 755 /etc/phpmyadmin/conf.d/config.inc.php
+ADD configs/phpmyadmin/phpmyadmin-setup.sh /phpmyadmin-setup.sh
+RUN chmod +x /phpmyadmin-setup.sh
+RUN /phpmyadmin-setup.sh
+
 # startup
 
 CMD /usr/sbin/pure-ftpd -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30009
