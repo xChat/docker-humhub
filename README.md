@@ -5,8 +5,6 @@ Based on `adminrezo/docker-humhub` docker image
 Humhub
 A social network without Big Brother
 
-MariaDB is configured with a humhub database with a humhub user with a HuMhUb password
-
 ## How to
 
 Just build it ...
@@ -22,9 +20,10 @@ enjoy it ! `https://your-container-ip/`
 ## Variables, and default values
 ```shell
 GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
+DB_ROOT_PASSWORD boDlyGo!
 DB_DATABASE humhub
 DB_USER humhub
-DB_PASSWORD HuMhUb
+DB_PASSWORD _HuMhUb!
 ```
 
 Based on:
