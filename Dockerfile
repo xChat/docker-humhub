@@ -9,14 +9,19 @@ MAINTAINER Jerry Li
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
+ENV DB_ROOT_PASSWORD boDlyGo!
 ENV DB_DATABASE humhub
 ENV DB_USER humhub
-ENV DB_PASSWORD HuMhUb
+ENV DB_PASSWORD _HuMhUb!
 
 # lamp
 
 RUN apt-get update
-RUN apt-get install lamp-server^
+
+RUN (echo 'mysql-server mysql-server/root_password password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'mysql-server mysql-server/root_password_again password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+
+RUN apt-get --yes --force-yes install lamp-server^
 
 # updates & packages install
 
@@ -104,10 +109,10 @@ RUN pure-pw mkdb
 # phpmyadmin
 
 RUN (echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password password root' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password root' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password root' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password root' | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
 RUN (echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections)
 RUN apt-get install phpmyadmin -y
 ADD configs/phpmyadmin/config.inc.php /etc/phpmyadmin/conf.d/config.inc.php
