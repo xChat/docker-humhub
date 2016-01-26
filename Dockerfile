@@ -43,7 +43,7 @@ RUN (/bin/bash -c /pre-conf.sh)
 RUN service apache2 stop
 RUN a2enmod ssl
 RUN a2enmod rewrite
-RUN a2dissite default
+RUN a2dissite 000-default
 RUN a2ensite default-ssl
 
 
