@@ -1,6 +1,6 @@
 # docker-humhub
 
-Based on `adminrezo/docker-humhub` docker image
+Based on the latest ubuntu docker image at the time of build
 
 Humhub
 A social network without Big Brother
