@@ -3,9 +3,9 @@
 /usr/bin/mysqld_safe &
 sleep 10s
 
-mysqladmin -u root password ${DB_PASSWORD}
-mysqladmin -u root -p${DB_PASSWORD} reload
-mysqladmin -u root -p${DB_PASSWORD} create ${DB_DATABASE}
+mysqladmin -u root password ${DB_ROOT_PASSWORD}
+mysqladmin -u root -p${DB_ROOT_PASSWORD} reload
+mysqladmin -u root -p${DB_ROOT_PASSWORD} create ${DB_DATABASE}
 
 echo "GRANT ALL ON ${DB_DATABASE}.* TO ${DB_USER}@localhost IDENTIFIED BY '${DB_PASSWORD}'; flush privileges; " | mysql -u root -p${DB_PASSWORD}
 
