@@ -14,6 +14,7 @@ ENV DB_USER humhub
 ENV DB_PASSWORD HuMhUb
 
 # lamp
+
 RUN apt-get update
 RUN apt-get install lamp-server^
 
