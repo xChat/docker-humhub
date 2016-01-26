@@ -11,11 +11,11 @@ MariaDB is configured with a humhub database with a humhub user with a HuMhUb pa
 
 Just build it ...
 
-```docker build -t adminrezo/humhub .```
+```docker build -t xchat/docker-humhub .```
 
 ... run it ...
 
-```docker run --name humhub -d adminrezo/humhub && docker inspect humhub |grep IPAddress```
+```docker run --name humhub -d xchat/docker-humhub && docker inspect humhub |grep IPAddress```
 
 enjoy it ! `https://your-container-ip/`
 
