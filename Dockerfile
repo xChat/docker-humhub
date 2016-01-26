@@ -4,7 +4,7 @@
 #
 
 
-FROM     adminrezo/docker-lamp
+FROM     ubuntu
 MAINTAINER Jerry Li
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -12,6 +12,10 @@ ENV GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
 ENV DB_DATABASE humhub
 ENV DB_USER humhub
 ENV DB_PASSWORD HuMhUb
+
+# lamp
+RUN apt-get update
+RUN apt-get install lamp-server^
 
 # updates & packages install
 
