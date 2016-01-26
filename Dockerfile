@@ -14,18 +14,18 @@ ENV DB_DATABASE humhub
 ENV DB_USER humhub
 ENV DB_PASSWORD _HuMhUb!
 
-# lamp
+# updates
 
-RUN apt-get update
+RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+
+# lamp
 
 RUN (echo 'mysql-server mysql-server/root_password password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
 RUN (echo 'mysql-server mysql-server/root_password_again password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
-
 RUN apt-get --yes --force-yes install lamp-server^
 
-# updates & packages install
+# packages install
 
-RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
 RUN mysqld_safe start
 RUN apt-get install -y -q php5-gd php5-curl php5-sqlite php5-ldap php-apc wget unzip cron
 RUN wget $GIT_MASTER_URL
