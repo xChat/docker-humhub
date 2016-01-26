@@ -36,7 +36,7 @@ RUN chown www-data:www-data -R /var/www/
 
 # config 
 
-ADD default-ssl /etc/apache2/sites-available/default-ssl
+ADD default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 ADD pre-conf.sh /pre-conf.sh
 RUN chmod 750 /pre-conf.sh
 RUN (/bin/bash -c /pre-conf.sh)
