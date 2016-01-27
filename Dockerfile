@@ -65,8 +65,9 @@ deb-src http://security.debian.org jessie/updates main\n\
 " > /etc/apt/sources.list
 RUN apt-get -y update
 
-# install package building helpers
+# fix dependecies & install package building helpers
 
+RUN apt-get -y -f install
 RUN apt-get -y --force-yes install dpkg-dev debhelper
 
 # install dependancies
