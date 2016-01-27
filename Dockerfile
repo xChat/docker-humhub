@@ -4,7 +4,7 @@
 #
 
 
-FROM     ubuntu:Wily
+FROM     ubuntu:wily
 MAINTAINER Jerry Li
 
 ENV DEBIAN_FRONTEND noninteractive
