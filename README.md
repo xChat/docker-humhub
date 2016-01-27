@@ -20,6 +20,7 @@ enjoy it ! `https://your-container-ip/`
 ## Variables, and default values
 ```shell
 GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
+ROOT_PASSWORD rboDlyGo!
 DB_ROOT_PASSWORD boDlyGo!
 DB_DATABASE humhub
 DB_USER humhub
