@@ -1,15 +1,16 @@
 # Humhub
 #
-# VERSION               0.0.2
+# VERSION               0.0.3
 #
 
 
-FROM     ubuntu:wily
+FROM     ubuntu
 MAINTAINER Jerry Li
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
-ENV DB_ROOT_PASSWORD boDlyGo!
+ENV ROOT_PASSWORD rboDlyGo!
+ENV DB_ROOT_PASSWORD dboDlyGo!
 ENV DB_DATABASE humhub
 ENV DB_USER humhub
 ENV DB_PASSWORD _HuMhUb!
@@ -53,59 +54,21 @@ ADD supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
 CMD ["supervisord", "-n"]
 
 
-# pure-ftpd
-# properly setup debian sources
+# openssh
 
-RUN echo "deb http://http.debian.net/debian jessie main\n\
-deb-src http://http.debian.net/debian jessie main\n\
-deb http://http.debian.net/debian jessie-updates main\n\
-deb-src http://http.debian.net/debian jessie-updates main\n\
-deb http://security.debian.org jessie/updates main\n\
-deb-src http://security.debian.org jessie/updates main\n\
-" > /etc/apt/sources.list
-RUN apt-get -y update
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:'echo $ROOT_PASSWORD | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-# fix dependecies & install package building helpers
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-RUN apt-get -y -f install
-RUN apt-get -y --force-yes install dpkg-dev debhelper
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
 
-# install dependancies
-
-RUN apt-get -y build-dep pure-ftpd
-
-# build from source
-
-RUN mkdir /tmp/pure-ftpd/ && \
-	cd /tmp/pure-ftpd/ && \
-	apt-get source pure-ftpd && \
-	cd pure-ftpd-* && \
-	sed -i '/^optflags=/ s/$/ --without-capabilities/g' ./debian/rules && \
-	dpkg-buildpackage -b -uc
-
-# install the new deb files
-
-RUN dpkg -i /tmp/pure-ftpd/pure-ftpd-common*.deb
-RUN apt-get -y install openbsd-inetd
-RUN dpkg -i /tmp/pure-ftpd/pure-ftpd_*.deb
-
-# prevent pure-ftpd upgrading
-
-RUN apt-mark hold pure-ftpd pure-ftpd-common
-
-# setup ftpgroup and ftpuser
-
-RUN groupadd ftpgroup
-RUN useradd -g ftpgroup -d /home/ftpusers -s /dev/null ftpuser
-
-ENV PUBLICHOST ftp.foo.com
-
-VOLUME /home/ftpusers
-
-# add ftp user
-
-RUN pure-pw useradd bob -u ftpuser -d /var/www/humhub
-RUN pure-pw mkdb
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
 
 # phpmyadmin
 
@@ -122,8 +85,4 @@ ADD configs/phpmyadmin/phpmyadmin-setup.sh /phpmyadmin-setup.sh
 RUN chmod +x /phpmyadmin-setup.sh
 RUN /phpmyadmin-setup.sh
 
-# startup
-
-CMD /usr/sbin/pure-ftpd -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30009
-
-EXPOSE 80 443 21 30000-30009
+EXPOSE 22 80 443 30000-30009
