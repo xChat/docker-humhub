@@ -21,8 +21,8 @@ RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && ap
 
 # lamp
 
-RUN (echo 'mysql-server mysql-server/root_password password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
-RUN (echo 'mysql-server mysql-server/root_password_again password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'mysql-server mysql-server/root_password password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
+RUN (echo 'mysql-server mysql-server/root_password_again password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
 RUN apt-get --yes --force-yes install lamp-server^
 
 # neccessary packages install
@@ -58,7 +58,7 @@ CMD ["supervisord", "-n"]
 
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:'echo $ROOT_PASSWORD | chpasswd
+RUN echo 'root:'echo ${ROOT_PASSWORD} | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
@@ -74,10 +74,10 @@ CMD ["/usr/sbin/sshd", "-D"]
 # phpmyadmin
 
 RUN (echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
+RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
 RUN (echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections)
 RUN apt-get install phpmyadmin -y
 ADD configs/phpmyadmin/config.inc.php /etc/phpmyadmin/conf.d/config.inc.php
