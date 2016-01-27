@@ -25,7 +25,7 @@ RUN (echo 'mysql-server mysql-server/root_password password' echo $DB_ROOT_PASSW
 RUN (echo 'mysql-server mysql-server/root_password_again password' echo $DB_ROOT_PASSWORD | debconf-set-selections)
 RUN apt-get --yes --force-yes install lamp-server^
 
-# packages install
+# neccessary packages install
 
 RUN mysqld_safe start
 RUN apt-get install -y -q php5-gd php5-curl php5-sqlite php5-ldap php-apc wget unzip cron
@@ -62,6 +62,7 @@ RUN echo 'root:'echo $ROOT_PASSWORD | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
+
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 ENV NOTVISIBLE "in users profile"
