@@ -32,4 +32,4 @@ https://hub.docker.com/r/adminrezo/docker-humhub (adminrezo/docker-humhub)
 
 https://github.com/13Genius/docker-humhub
 
-https://github.com/RobLoach/Dockie
+https://docs.docker.com/engine/examples/running_ssh_service/
