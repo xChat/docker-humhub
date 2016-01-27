@@ -25,6 +25,26 @@ RUN (echo 'mysql-server mysql-server/root_password password' echo ${DB_ROOT_PASS
 RUN (echo 'mysql-server mysql-server/root_password_again password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
 RUN apt-get --yes --force-yes install lamp-server^
 
+#apache
+
+
+ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
+ADD configs/apache/start-apache2.sh /start-apache2.sh
+
+RUN chmod 750 /*.sh
+
+ADD configs/mysql/my.cnf /etc/mysql/conf.d/my.cnf
+ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+
+# Remove pre-installed database
+
+RUN rm -rf /var/lib/mysql/*
+
+# Add volumes for MySQL
+
+VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
+
 # neccessary packages install
 
 RUN mysqld_safe start
@@ -37,8 +57,8 @@ RUN chown www-data:www-data -R /var/www/
 
 # config 
 
-ADD default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-ADD pre-conf.sh /pre-conf.sh
+ADD configs/apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+ADD configs/humhub/pre-conf.sh /pre-conf.sh
 RUN chmod 750 /pre-conf.sh
 RUN (/bin/bash -c /pre-conf.sh)
 RUN service apache2 stop
@@ -50,9 +70,7 @@ RUN a2ensite default-ssl
 
 # start services
 
-ADD supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
-CMD ["supervisord", "-n"]
-
+ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
 
 # openssh
 
@@ -67,8 +85,6 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
-
-EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 
 # phpmyadmin
@@ -86,4 +102,5 @@ ADD configs/phpmyadmin/phpmyadmin-setup.sh /phpmyadmin-setup.sh
 RUN chmod +x /phpmyadmin-setup.sh
 RUN /phpmyadmin-setup.sh
 
-EXPOSE 22 80 443 30000-30009
+EXPOSE 22 80 443 3306 30000-30009
+CMD ["supervisord", "-n"]
