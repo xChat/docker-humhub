@@ -1,6 +1,7 @@
 #!/bin/bash
 
-/usr/bin/mysqld_safe &
+service mysql start
+/usr/bin/mysqld_safe --skip-grant-tables &
 sleep 10s
 
 mysqladmin -u root password ${DB_ROOT_PASSWORD}
