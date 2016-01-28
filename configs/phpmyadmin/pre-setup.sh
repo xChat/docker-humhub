@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections)
 echo 'phpmyadmin phpmyadmin/app-password password${DB_ROOT_PASSWORD}' | debconf-set-selections)
 echo 'phpmyadmin phpmyadmin/app-password-confirm password ${DB_ROOT_PASSWORD}' | debconf-set-selections)
