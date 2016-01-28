@@ -6,22 +6,16 @@ Humhub
 A social network without Big Brother
 
 ## How to
-
-Just build it ...
-
 ```docker build -t xchat/docker-humhub .```
+```docker run --name humhub -d xchat/docker-humhub && docker inspect humhub | grep IPAddress```
 
-... run it ...
-
-```docker run --name humhub -d xchat/docker-humhub && docker inspect humhub |grep IPAddress```
-
-enjoy it ! `https://your-container-ip/`
+`https://your-container-ip/`
 
 ## Variables, and default values
 ```shell
 GIT_MASTER_URL https://github.com/humhub/humhub/archive/master.zip
 ROOT_PASSWORD rboDlyGo!
-DB_ROOT_PASSWORD boDlyGo!
+DB_ROOT_PASSWORD dboDlyGo!
 DB_DATABASE humhub
 DB_USER humhub
 DB_PASSWORD _HuMhUb!
