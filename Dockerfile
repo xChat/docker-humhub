@@ -43,8 +43,6 @@ RUN rm -rf /var/lib/mysql/*
 VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
 
 # neccessary packages install
-
-RUN mysqld_safe start
 RUN apt-get install -y -q php5-gd php5-curl php5-sqlite php5-ldap php-apc wget unzip cron
 RUN wget $GIT_MASTER_URL
 RUN unzip master.zip
@@ -52,7 +50,7 @@ RUN mv humhub-master /var/www/humhub
 RUN chown www-data:www-data -R /var/www/
 
 
-# config 
+# config
 
 ADD configs/apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 ADD configs/humhub/pre-conf.sh /pre-conf.sh
