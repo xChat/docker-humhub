@@ -7,6 +7,7 @@ A social network without Big Brother
 
 ## How to
 ```docker build -t xchat/docker-humhub .```
+
 ```docker run --name humhub -d xchat/docker-humhub && docker inspect humhub | grep IPAddress```
 
 `https://your-container-ip/`
