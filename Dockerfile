@@ -1,6 +1,6 @@
 # Humhub
 #
-# VERSION               0.0.3
+# VERSION               0.0.4
 #
 
 
@@ -21,18 +21,15 @@ RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && ap
 
 # lamp
 
-RUN (echo 'mysql-server mysql-server/root_password password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN (echo 'mysql-server mysql-server/root_password_again password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN apt-get --yes --force-yes install lamp-server^
+ADD configs/lamp/lamp-install.sh /lamp-install.sh
+RUN chmod 750 /lamp-install.sh
+RUN (/bin/bash -c /lamp-install.sh)
 
 #apache
 
-
 ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
 ADD configs/apache/start-apache2.sh /start-apache2.sh
-
 RUN chmod 750 /*.sh
-
 ADD configs/mysql/my.cnf /etc/mysql/conf.d/my.cnf
 ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
@@ -59,7 +56,7 @@ RUN chown www-data:www-data -R /var/www/
 
 ADD configs/apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 ADD configs/humhub/pre-conf.sh /pre-conf.sh
-RUN chmod 750 /pre-conf.sh
+RUN chmod +x /pre-conf.sh
 RUN (/bin/bash -c /pre-conf.sh)
 RUN service apache2 stop
 RUN a2enmod ssl
@@ -67,16 +64,13 @@ RUN a2enmod rewrite
 RUN a2dissite 000-default
 RUN a2ensite default-ssl
 
-
-# start services
-
-ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
-
 # openssh
 
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:'echo ${ROOT_PASSWORD} | chpasswd
+ADD configs/openssh/openssh-conf.sh /openssh-conf.sh
+RUN chmod 750 /openssh-conf.sh
+RUN (/bin/bash -c /openssh-conf.sh)
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
@@ -89,18 +83,19 @@ CMD ["/usr/sbin/sshd", "-D"]
 
 # phpmyadmin
 
-RUN (echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/app-password-confirm password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/admin-pass password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/mysql/app-pass password' echo ${DB_ROOT_PASSWORD} | debconf-set-selections)
-RUN (echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections)
+ADD configs/phpmyadmin/pre-phpmyadmin-setup.sh /pre-phpmyadmin-setup.sh
+RUN chmod +x /pre-phpmyadmin-setup.sh
+RUN /pre-phpmyadmin-setup.sh
 RUN apt-get install phpmyadmin -y
 ADD configs/phpmyadmin/config.inc.php /etc/phpmyadmin/conf.d/config.inc.php
 RUN chmod 755 /etc/phpmyadmin/conf.d/config.inc.php
 ADD configs/phpmyadmin/phpmyadmin-setup.sh /phpmyadmin-setup.sh
 RUN chmod +x /phpmyadmin-setup.sh
 RUN /phpmyadmin-setup.sh
+
+# start services
+
+ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
 
 EXPOSE 22 80 443 3306 30000-30009
 CMD ["supervisord", "-n"]
