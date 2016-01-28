@@ -10,6 +10,7 @@ A social network without Big Brother
 
 ```docker run --name humhub -d xchat/docker-humhub && docker inspect humhub | grep IPAddress```
 
+Access it:
 `https://your-container-ip/`
 
 ## Variables, and default values
