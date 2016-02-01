@@ -9,7 +9,7 @@ mysqladmin -u root -p${DB_ROOT_PASSWORD} create ${DB_DATABASE}
 
 echo "GRANT ALL ON ${DB_DATABASE}.* TO ${DB_USER}@localhost IDENTIFIED BY '${DB_PASSWORD}'; flush privileges; " | mysql -u root -p${DB_ROOT_PASSWORD}
 
-killall mysqld
+#killall mysqld
 echo "Database initialized ..."
 sleep 10s
 
