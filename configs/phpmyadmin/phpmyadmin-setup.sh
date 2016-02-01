@@ -4,13 +4,13 @@
 /usr/bin/mysqld_safe > /dev/null 2>&1 &
 
 # Wait until the MySQL server is available.
-RET=1
-while [[ RET -ne 0 ]]; do
-    echo " ---> Waiting for MySQL"
-    sleep 2
+#RET=1
+#while [[ RET -ne 0 ]]; do
+#    echo " ---> Waiting for MySQL"
+#    sleep 2
     mysql -uroot -p${DB_ROOT_PASSWORD} -e "status" > /dev/null 2>&1
-    RET=$?
-done
+#    RET=$?
+#done
 
 # Create the phpmyadmin storage configuration database.
 mysql -uroot -p${DB_ROOT_PASSWORD} -e "CREATE DATABASE phpmyadmin; GRANT ALL PRIVILEGES ON phpmyadmin.* TO 'root'@'localhost' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
