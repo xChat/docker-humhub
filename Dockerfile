@@ -35,7 +35,7 @@ ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mys
 ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 
 # Remove pre-installed database
-
+# this seems to cause issues?
 #RUN rm -rf /var/lib/mysql/*
 
 # Add volumes for MySQL
