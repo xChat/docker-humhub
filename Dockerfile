@@ -25,7 +25,7 @@ ADD configs/lamp/lamp-install.sh /lamp-install.sh
 RUN chmod 750 /lamp-install.sh
 RUN (/bin/bash -c /lamp-install.sh)
 
-#apache
+# apache
 
 ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
 ADD configs/apache/start-apache2.sh /start-apache2.sh
@@ -36,7 +36,7 @@ ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-a
 
 # Remove pre-installed database
 
-RUN rm -rf /var/lib/mysql/*
+#RUN rm -rf /var/lib/mysql/*
 
 # Add volumes for MySQL
 
