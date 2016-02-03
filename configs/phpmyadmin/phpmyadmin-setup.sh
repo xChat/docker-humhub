@@ -19,4 +19,4 @@ mysql -uroot -p${DB_ROOT_PASSWORD} -e "CREATE DATABASE phpmyadmin; GRANT ALL PRI
 gunzip < /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz | mysql -u root -p${DB_ROOT_PASSWORD} phpmyadmin
 
 # shutdown the server.
-mysqladmin -u root -p${DB_ROOT_PASSWORD} shutdown
+mysql -u root -p${DB_ROOT_PASSWORD} shutdown
