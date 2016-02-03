@@ -17,10 +17,10 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
 $cfg['Servers'][$i]['AllowRoot'] = true;
 $cfg['Servers'][$i]['nopassword'] = true;
 $cfg['Servers'][$i]['user'] = 'root';
-$cfg['Servers'][$i]['password'] = 'root';
+$cfg['Servers'][$i]['password'] = '${DB_ROOT_PASSWORD}';
 $cfg['Servers'][$i]['auth_type'] = 'config';
 $cfg['Servers'][$i]['controluser'] = 'root';
-$cfg['Servers'][$i]['controlpass'] = 'root';
+$cfg['Servers'][$i]['controlpass'] = '${DB_ROOT_PASSWORD}';
 
 // phpMyAdmin Configuration Storage
 $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
