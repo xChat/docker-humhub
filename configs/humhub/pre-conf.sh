@@ -12,7 +12,7 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
-mysql -uroot -p${DB_ROOT_PASSWORD} -e "CREATE DATABASE "${DB_DATABASE}";"
+echo 'CREATE DATABASE' ${DB_DATABASE}';' | mysql -uroot -p${DB_ROOT_PASSWORD}
 echo 'GRANT ALL ON '${DB_DATABASE}'.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}'; flush privileges;' | mysql -u root -p${DB_ROOT_PASSWORD}
 
 #killall mysqld
