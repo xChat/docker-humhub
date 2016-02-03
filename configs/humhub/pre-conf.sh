@@ -1,12 +1,18 @@
 #!/bin/bash
 
-/usr/bin/mysqld_safe &
-sleep 10s
+# start MySQL
+/usr/bin/mysqld_safe > /dev/null 2>&1 &
 
-mysqladmin -u root password ${DB_ROOT_PASSWORD}
-mysqladmin -u root -p${DB_ROOT_PASSWORD} reload
-mysqladmin -u root -p${DB_ROOT_PASSWORD} create ${DB_DATABASE}
+# wait until the MySQL server is available.
+RET=1
+while [[ RET -ne 0 ]]; do
+    echo " ---> Waiting for MySQL"
+    sleep 2
+    mysql -uroot -p${DB_ROOT_PASSWORD} -e "status" > /dev/null 2>&1
+    RET=$?
+done
 
+mysql -uroot -p${DB_ROOT_PASSWORD} -e "CREATE DATABASE "${DB_DATABASE}";"
 echo 'GRANT ALL ON '${DB_DATABASE}'.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}'; flush privileges;' | mysql -u root -p${DB_ROOT_PASSWORD}
 
 #killall mysqld
