@@ -31,8 +31,6 @@ ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
 ADD configs/apache/start-apache2.sh /start-apache2.sh
 RUN chmod 750 /*.sh
 ADD configs/mysql/my.cnf /etc/mysql/conf.d/my.cnf
-ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 
 # Remove pre-installed database
 # this seems to cause issues?
@@ -93,6 +91,8 @@ RUN /phpmyadmin-setup.sh
 
 # start services
 
+ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
 
 EXPOSE 22 80 443 3306 30000-30009
