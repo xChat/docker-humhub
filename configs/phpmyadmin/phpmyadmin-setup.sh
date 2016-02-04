@@ -19,4 +19,4 @@ echo "CREATE DATABASE phpmyadmin; GRANT ALL PRIVILEGES ON phpmyadmin.* TO 'root'
 gunzip < /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz | mysql -uroot -p${DB_ROOT_PASSWORD} phpmyadmin
 
 # shutdown the server.
-mysql -uroot -p${DB_ROOT_PASSWORD} shutdown
+killall mysqld
