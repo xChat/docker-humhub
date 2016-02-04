@@ -19,6 +19,11 @@ ENV DB_PASSWORD _HuMhUb!
 
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
 
+# supervisord
+
+RUN apt-get install -y supervisor
+RUN service supervisor restart
+
 # lamp
 
 ADD configs/lamp/lamp-install.sh /lamp-install.sh
@@ -98,4 +103,4 @@ ADD configs/openssh/supervisord-openssh.conf /etc/supervisor/conf.d/supervisord-
 ADD configs/humhub/supervisord-humhub.conf /etc/supervisor/conf.d/supervisord-humhub.conf
 
 EXPOSE 22 80 443 3306 30000-30009
-CMD ["/usr/bin/supervisord", "-n"]
+CMD ["supervisord", "-n"]
