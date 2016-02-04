@@ -29,7 +29,7 @@ RUN (/bin/bash -c /lamp-install.sh)
 
 ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
 ADD configs/apache/start-apache2.sh /start-apache2.sh
-RUN chmod 750 /*.sh
+RUN chmod 750 /start-apache2.sh
 ADD configs/mysql/my.cnf /etc/mysql/conf.d/my.cnf
 
 # Remove pre-installed database
@@ -65,6 +65,8 @@ RUN a2ensite default-ssl
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 ADD configs/openssh/openssh-conf.sh /openssh-conf.sh
+ADD configs/openssh/start-openssh.sh /start-openssh.sh
+RUN chmod 750 /start-openssh.sh
 RUN chmod 750 /openssh-conf.sh
 RUN (/bin/bash -c /openssh-conf.sh)
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -75,7 +77,6 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
-CMD ["/usr/sbin/sshd", "-D"]
 
 # phpmyadmin
 
@@ -93,6 +94,7 @@ RUN /phpmyadmin-setup.sh
 
 ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+ADD configs/openssh/supervisor-openssh.conf /etc/supervisor/conf.d/supervisor-openssh.conf
 ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
 
 EXPOSE 22 80 443 3306 30000-30009
