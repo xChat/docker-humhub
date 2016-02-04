@@ -94,8 +94,8 @@ RUN /phpmyadmin-setup.sh
 
 ADD configs/mysql/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 ADD configs/apache/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-ADD configs/openssh/supervisor-openssh.conf /etc/supervisor/conf.d/supervisor-openssh.conf
-ADD configs/humhub/supervisor-humhub.conf /etc/supervisor/conf.d/supervisor-humhub.conf
+ADD configs/openssh/supervisord-openssh.conf /etc/supervisor/conf.d/supervisord-openssh.conf
+ADD configs/humhub/supervisord-humhub.conf /etc/supervisor/conf.d/supervisord-humhub.conf
 
 EXPOSE 22 80 443 3306 30000-30009
 CMD ["supervisord", "-n"]
