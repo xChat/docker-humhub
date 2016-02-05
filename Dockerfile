@@ -34,6 +34,7 @@ RUN (/bin/bash -c /lamp-install.sh)
 
 ADD configs/mysql/start-mysqld.sh /start-mysqld.sh
 ADD configs/apache/start-apache2.sh /start-apache2.sh
+RUN chmod 750 /start-mysqld.sh
 RUN chmod 750 /start-apache2.sh
 ADD configs/mysql/my.cnf /etc/mysql/conf.d/my.cnf
 
